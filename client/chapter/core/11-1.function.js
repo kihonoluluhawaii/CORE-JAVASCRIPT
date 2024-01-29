@@ -16,7 +16,7 @@ function getRandomValue() {
 function calcPrice(
   priceA,
   priceB,
-  priceC = getRandomValue(),
+  priceC = getRandomValue(), // defalut parameter,기본값
   priceD = getRandomValue()
 ) {
   //   if (!priceD) {
@@ -81,7 +81,50 @@ console.assert(rem(20) === '1.25rem');
 console.assert(rem('25px') === '1.5625rem');
 
 // css(node: string, prop: string, value: number|strung) : string;
-let css;
+
+function getStyle(node, prop) {
+  //값을 가져오고 결과를 리턴해주는 함수
+
+  // validation 확인 작업
+
+  if (typeof node === 'string') {
+    node = document.querySelector(node);
+  }
+  if (typeof prop !== 'string') {
+    throw new Error('getStyle 함수의 두 번째 인수는 문자 타입 이어야합니다.');
+  }
+  return getComputedStyle(node)[prop];
+}
+
+// node에 .first 를 수집해주는 방법.
+
+// const first = document.querySelector('.first');   //document.quertySelector  <- 선택
+// document.getElementsByTagName('span')  <- 유물 , 오래된 것
+
+// const second  = document.querySelector('.second');
+// const size = getStyle('.first', 'fontSize'); //getStyle <- 함수
+// console.log(size);
+
+function setStyle(node, prop, value) {
+  if (typeof node === 'string') node = document.querySelector(node);
+  if (typeof prop !== 'string') {
+    throw new Error('setStyle 함수의 두 번째 인수는 문자 타입이여야 한다.');
+  }
+  if (!value)
+    throw new Error('setStyle 함수의 세번째 인수는 필수 입력값 입니다.');
+
+  node.style[prop] = value; // 대괄호 표기법
+}
+
+// setStyle('.first,', 'color', 'red');
+
+function css(node, prop, value) {
+  // if(!value){  //getter
+  //   return getStyle(node,prop)
+  // }  //setter
+  //   setStyle(node,prop,value)
+  return !value ? getStyle(node, prop) : setStyle(node, prop, value);
+}
 
 // node의 값을 'h1'으로 받았을 경우
 

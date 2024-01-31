@@ -29,11 +29,11 @@ let calcAllMoney = (...args) => {
   //for ..of
   //   for (let value of args) total += value;
 
-  //forEach
+  //forEach         //반복만 돌아줄뿐 어떠한 값도 반환하지 못합니다.
   //   args.forEach((item) => (total += item));
   //   return total;
 
-  //reduce
+  //reduce            //값을 반환하는 구조
   //args.reduce((acc,cur)=> acc + cur,0)
 
   return args.reduce((acc, cur) => acc + cur, 0);
@@ -83,16 +83,61 @@ const user = {
   address: '서울시',
   grades: [80, 40, 15],
   totalGrades() {
-    function sayHi(){
-    console.log(this);
-  }
-  sayHi()
+    this.grades.forEach(function (item) {
+      this.total += item;
+    });
+    return this.total;
+    //   function sayHi() => {
+    //   console.log(this);
+    // }
+    // sayHi()
+  },
 };
 
 /* 다음 함수를 작성해봅니다. -------------------------------------------------- */
 
 // pow(numeric: number, powerCount: number): number;
-let pow;
+function pow(numeric, powerCount) {
+  let result = 1;
+  for (let i = 0; i < powerCount; i++) {
+    result *= numeric;
+  }
+  return result;
+}
+// console.log(pow(4, 3));
+
+// let powExpression = (numeric, powCount) => {
+//   return Array(powCount)
+//     .fill(null)
+//     .reduce((acc) => {
+//       return acc * numeric;
+//     }, 1);
+// };
+
+let powExpression = (numeric, powCount) =>
+  Array(powCount)
+    .fill(null)
+    .reduce((acc) => acc * numeric, 1);
 
 // repeat(text: string, repeatCount: number): string;
-let repeat;
+
+// function repeat(text, repeatCount) {
+//   let result = '';
+//   for (let i = 0; i <= repeatCount; i++) {
+//     result += text;
+//   }
+//   return result;
+// }
+// console.log(repeat('hello', 3));
+
+//repeat ('hello',3) // 'hellohellohello'
+
+let repeatExpresstion = (text, repeatCount) => {
+  Array(repeatCount)
+    .fill(null)
+    .reduce((acc) => {
+      return acc + text;
+    }, '');
+};
+
+console.log('hello', 3);

@@ -80,6 +80,7 @@ function rem(pxValue, base = 16) {
 console.assert(rem(20) === '1.25rem');
 console.assert(rem('25px') === '1.5625rem');
 
+console.clear();
 // css(node: string, prop: string, value: number|strung) : string;
 
 function getStyle(node, prop) {

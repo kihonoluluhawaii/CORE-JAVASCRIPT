@@ -37,6 +37,22 @@ class Tiger extends Animal {
     return `${target}에게 조심히 접근한다.`;
   }
 }
-('===');
 
 const 한라산호랑이 = new Tiger('한돌이');
+
+// Array.from();
+// Array.isArray();
+
+// [1,2].forEach();
+// [1,2].reduce()
+//
+// class Array {
+//   static form() {}
+//   static isArray() {}
+
+//   forEach() {}
+//   reduce() {}
+// }
+
+// const a = new Array()
+// Array.from()

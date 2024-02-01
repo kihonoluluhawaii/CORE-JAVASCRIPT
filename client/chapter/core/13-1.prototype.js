@@ -77,6 +77,7 @@ function Tiger(name) {
 Tiger.bark = function () {
   return '어흥';
 };
+
 // Tiger.prototype = a;
 
 const 한라산호랑이 = new Tiger('한돌이');

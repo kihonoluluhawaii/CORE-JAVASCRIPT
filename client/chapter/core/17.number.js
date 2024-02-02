@@ -54,8 +54,15 @@ console.log('min:', min);
 let pow = Math.pow(2, 53);
 console.log('pow:', pow);
 
-// 최소, 최대 값 사이 난수 반환 함수
-let getRandomMinMax = (min, max) => {
+// 최소, 최대 값 사이 난수 반환 함수 //유틸함수 만들기
+/**
+ *
+ * @param {*} min
+ * @param {*} max
+ * @returns {number}
+ */
+
+const getRandomMinMax = (min, max) => {
   if (min > max) throw new Error('최솟값은 최댓값보다 작아야 합니다.');
   return Math.round(Math.random() * (max - min) + min);
 };

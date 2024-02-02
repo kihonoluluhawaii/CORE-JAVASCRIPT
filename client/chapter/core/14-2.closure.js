@@ -9,34 +9,34 @@ function earth() {
 
   return function (value) {
     water = value;
-    // return apple
+    return apple;
   };
 }
 
 const UFO = earth();
 
-UFO(0);
+UFO();
 
 /**
  *
  */
 
-// const first = document.querySelector('.first');
+const first = document.querySelector('.first');
 
-// function handleClick() {
-//   let isClicked = false;
+function handleClick() {
+  let isClicked = false;
 
-//   return () => {
-//     if (!isClicked) {
-//       document.body.style.background = 'orange'; // setter
-//     } else {
-//       document.body.style.background = 'white';
-//     }
-//     isClicked = !isClicked;
-//   };
-// }
+  return () => {
+    if (!isClicked) {
+      document.body.style.background = 'orange'; // setter
+    } else {
+      document.body.style.background = 'white';
+    }
+    isClicked = !isClicked;
+  };
+}
 
-// first.addEventListener('click', handleClick());
+first.addEventListener('click', handleClick());
 
 //함수가 알아서 실행됨
 //IIFE

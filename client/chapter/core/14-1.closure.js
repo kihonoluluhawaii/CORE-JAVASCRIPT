@@ -6,11 +6,12 @@
 // - JavaScript의 매우 강력한 특성으로 독립적인 변수를 참조하는 함수를 말합니다.
 //   즉, 클로저에 정의된 함수는 그것이 작성된 환경을 '기억'합니다.
 
-function sum(a, b) {
-  return a + b;
-}
+// function sum(a, b) {
+//   return a + b;
+// }
 
-const value = sum;
+// const value = sum;
+///
 
 function first() {
   let x = 10;
@@ -21,8 +22,8 @@ function first() {
   }
   return second;
 }
-//////////////////////
 const result = first();
+//////////////////////
 
 function counter() {
   let count = 0;

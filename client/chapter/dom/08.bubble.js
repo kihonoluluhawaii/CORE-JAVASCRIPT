@@ -10,17 +10,28 @@ const p = getNode('p');
 
 section.addEventListener('click', (e) => {
   //일반 함수라면 this === e.currentTarget
-  console.log(e.target); //  첫 번째로 마주하는 마우스 포인터 대상
-  //   console.log(e.currentTarget);    이벤트가 걸린 대상
-
-  //   console.log('%c section', 'color:orange');
+  // console.log(e.target); //  첫 번째로 마주하는 마우스 포인터 대상
+  // console.log(e.currentTarget); //이벤트가 걸린 대상
+  console.log('%c section', 'color:orange');
 });
-// article.addEventListener('click', () => {
-//   console.log('%c article', 'color:dodgerblue');
-// });
-// p.addEventListener('click', (e) => {
-//   e.stopPropagation();
-//   console.log('%c p', 'color:hotpink');
-// });
+article.addEventListener('click', () => {
+  console.log('%c article', 'color:dodgerblue');
+});
+p.addEventListener('click', (e) => {
+  // e.stopPropagation();
+  console.log('%c p', 'color:hotpink');
+});
 
 /* 캡처링 ----------------------------------------------------------------- */
+section.addEventListener("click",(e) => {
+  
+
+});
+
+article.addEventListener('click', ()=>{
+
+})
+
+p.addEventListener('click', ()=>{
+
+})

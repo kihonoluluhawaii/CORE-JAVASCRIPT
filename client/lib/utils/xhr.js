@@ -1,210 +1,173 @@
 /* 
-
-[readyState]
-
-0: uninitialized
-1: loading
-2: loaded
-3: interactive
-4: complete
+  [readyState]
+  
+  0: uninitialized
+  1: loading
+  2: loaded
+  3: interactive
+  4: complete
 
 */
 
-// 비동기 통신을 해보자!  XMLHttpRequest
+const END_POINT = 'https://jsonplaceholder.typicode.com/users';
 
-/* -------------------------------------------- */
-/*                 XHR callback                 */
-/* -------------------------------------------- */
-
-function xhr({
+export function xhr({
   method = 'GET',
   url = '',
   onSuccess = null,
   onFail = null,
   body = null,
   headers = {
-    'Content-Type':'application/json',
-    'Access-Control-Allow-Origin': '*'
-  }
-} ){
-
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+  },
+}) {
   const xhr = new XMLHttpRequest();
 
-  xhr.open(method,url)
-  
-  Object.entries(headers).forEach(([key,value])=>{
-    xhr.setRequestHeader(key,value)
-  })
+  xhr.open(method, url);
 
-  xhr.addEventListener('readystatechange',()=>{
-    
-    const {readyState,status,response} = xhr // 객체의 구조분해할당
+  Object.entries(headers).forEach(([key, value]) => {
+    xhr.setRequestHeader(key, value);
+  });
 
-    if(readyState === 4){
-      if(status >= 200 && status < 400){
+  xhr.addEventListener('readystatechange', () => {
+    const { readyState, status, response } = xhr;
+
+    if (readyState === 4) {
+      if (status >= 200 && status < 400) {
         onSuccess(JSON.parse(response));
-      }else{
-        onFail( {message:'에러가 발생했습니다.'} )
+      } else {
+        onFail({ message: '에러가 발생했습니다!' });
       }
     }
-  })
-  xhr.send(JSON.stringify(body))
+  });
+
+  xhr.send(JSON.stringify(body));
 }
 
+// callback => 함수 본문을 넘겨서 안쪽 함수에서 실행
 
-// xhr({
-//   method:'POST',
-//   url:'https://jsonplaceholder.typicode.com/users',
-//   onSuccess(data){
-//     console.log( data );
-//   },
-//   onFail({message}){
-//     console.log( message );
-//   },
-//   body: {name:'tiger'}
-// })
+// 자바스크립트 함수는 객체다.
 
-
-
-
-xhr.get = (url,onSuccess,onFail) => {
+xhr.get = (url, onSuccess, onFail) => {
   xhr({
     url,
     onSuccess,
-    onFail
-  })
-}
+    onFail,
+  });
+};
 
-xhr.post = (url,body,onSuccess,onFail) => {
+xhr.post = (url, body, onSuccess, onFail) => {
   xhr({
-    method:'POST',
+    method: 'POST',
     url,
     body,
     onSuccess,
-    onFail
-  })
-}
+    onFail,
+  });
+};
 
-xhr.put = (url,body,onSuccess,onFail) => {
+xhr.put = (url, body, onSuccess, onFail) => {
   xhr({
-    method:'PUT',
+    method: 'PUT',
     url,
     body,
     onSuccess,
-    onFail
-  })
-}
+    onFail,
+  });
+};
 
-xhr.delete = (url,onSuccess,onFail) => {
+xhr.delete = (url, onSuccess, onFail) => {
   xhr({
-    method:'DELETE',
+    method: 'DELETE',
     url,
     onSuccess,
-    onFail
-  })
-}
+    onFail,
+  });
+};
 
-// xhr.get(
-//   'https://jsonplaceholder.typicode.com/users',
-//   (data)=>{
-//     console.log( data );
-//   },
-//   (err)=>{
-//     console.log( err );
-//   }
-// )
-
-
-
-
+// xhr.delete()
 
 /* -------------------------------------------- */
-/*                XHR Promise API               */
+/*                  xhr Promise                 */
 /* -------------------------------------------- */
-
 
 const defaultOptions = {
   method: 'GET',
   url: '',
-  body:null,
-  errorMessage:'서버와의 통신이 원활하지 않습니다.',
-  headers:{
-    'Content-Type':'application/json',
-    'Access-Control-Allow-Origin':'*'
-  }
-}
+  body: null,
+  errorMessage: '서버와의 통신이 원활하지 않습니다.',
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+  },
+};
 
-
-export function xhrPromise(options){
-
-  const {method,url,body,errorMessage,headers} = {
+export function xhrPromise(options) {
+  const { method, url, body, errorMessage, headers } = {
     ...defaultOptions,
     ...options,
-    headers:{
-      ...defaultOptions.headers,
+    headers: {
+      ...defaultOptions,
       ...options.headers,
-    }
-  }
+    },
+  };
+
   const xhr = new XMLHttpRequest();
 
-  xhr.open(method,url)
+  xhr.open(method, url);
 
-  Object.entries(headers).forEach(([key,value])=>{
-    xhr.setRequestHeader(key,value);
-  })
+  Object.entries(headers).forEach(([key, value]) => {
+    xhr.setRequestHeader(key, value);
+  });
 
-  xhr.send(JSON.stringify(body))
+  xhr.send(JSON.stringify(body));
 
   return new Promise((resolve, reject) => {
-    xhr.addEventListener('readystatechange',()=>{
-      if(xhr.readyState === 4){
-        if(xhr.status >= 200 && xhr.status < 400){
-          resolve(JSON.parse(xhr.response))
-        }else{
-          reject({message:errorMessage})
+    xhr.addEventListener('readystatechange', () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status >= 200 && xhr.status < 400) {
+          resolve(JSON.parse(xhr.response));
+        } else {
+          reject({ message: '알 수 없는 오류가 발생했습니다!' });
+          // error
         }
       }
-    })
-  })
+    });
+  });
 }
 
-
 // xhrPromise({
-//   url:'https://jsonplaceholder.typicode.com/users'
+//   url: END_POINT,
 // })
 // .then((res)=>{
 //   console.log( res );
 // })
+// .catch((err)=>{
+//   err.message
+// })
 
+xhrPromise.get = (url) => {
+  return xhrPromise({ url });
+};
 
-
-xhrPromise.get = (url)=>{
-  return xhrPromise({ url })
-}
-
-xhrPromise.post = (url,body) =>{
+xhrPromise.post = (url, body) => {
   return xhrPromise({
+    method: 'POST',
     url,
     body,
-    method:'POST'
-  })
-}
+  });
+};
 
-xhrPromise.put = (url,body) =>{
+xhrPromise.delete = (url) => {
   return xhrPromise({
+    method: 'DELETE',
     url,
-    body,
-    method:'PUT'
-  })
-}
+  });
+};
 
-xhrPromise.delete = (url) =>{
-  return xhrPromise({
-    url,
-    method:'DELETE'
-  })
-}
-
-
-
-
+// xhrPromise.get(END_POINT)
+// .then(console.log)
+// xhrPromise.post(END_POINT,{name:'tiger'});
+// // xhrPromise.put()
+// // xhrPromise.delete()

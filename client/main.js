@@ -9,9 +9,12 @@ import {
   renderSpinner,
   renderUserCard,
   renderEmptyCard,
+  clearContents,
 } from './lib/index.js';
 
-const END_POINT = `https://jsonplaceholder.typicode.com/users`;
+// GET 통신
+
+const END_POINT = `http://localhost:3000/users`;
 const userCardInner = $('.user-card-inner');
 
 // [phase-1]
@@ -55,15 +58,65 @@ async function renderUserList() {
 
 renderUserList();
 
+// DELETE 통신
+
 function handelDelete(e) {
   const button = e.target.closest('button');
   const article = e.target.closest('article');
   if (!button) return;
   const id = article.dataset.index.slice(5);
 
-  const deleteId = tiger.delete(`${END_POINT}/${id}`);
+  const deleteId = tiger.delete(`${END_POINT}/${id}`).then(() => {
+    clearContents(userCardInner);
+    renderUserList();
+  });
+  // delete 통신 이후
+  // 기존 유저의 목록을 제거해주고
+  // 유저목록을 fetch 이후 다시 렌더링
 }
 
 //   tiger.delete() 를 사용해서 해당 아이디번째를 넘겼을때 실제 딜맅통신이 이루어 지게 만두로라 / network탭에서 삭제 눌렀을때 delete통신이 나오도록
 
 userCardInner.addEventListener('click', handelDelete);
+
+const createButton = $('.create');
+const cancelButton = $('.cancel');
+const doneButton = $('.done');
+const nameField = $('nameField');
+
+const handleCreate = () => {
+  gsap.to('.pop', { autoAlpha: 1 });
+};
+
+const handleCancel = (e) => {
+  e.stopPropagation();
+  gsap.to('.pop', { autoAlpha: 0 });
+};
+
+const handleDone = (e) => {
+  e.preventDefault(); //html 태그의 기본 동작 차단
+
+  const name = $('#nameField').value;
+  const email = $('#emailField').value;
+  const website = $('#siteField').value;
+
+  //POST 통신
+
+  // 1-name,email,website 담고있는 객체를 생성
+  const obj = { name, email, website };
+  // 2-Post 통신의 body에 객체 전달
+  tiger.post(END_POINT, obj).then(() => {
+    // 3-유저 목록 지우기
+    clearContents(userCardInner);
+
+    // 4-유저 목록 렌더링하기
+    renderUserList();
+
+    // 5-팝업 창 닫기
+    gsap.to('.pop', { autoAlpha: 0 });
+  });
+};
+
+cancelButton.addEventListener('click', handleCancel);
+createButton.addEventListener('click', handleCreate);
+doneButton.addEventListener('click', handleDone);
